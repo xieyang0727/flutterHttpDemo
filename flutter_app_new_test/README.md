@@ -1,16 +1,56 @@
 # flutter_app_new_test
 
-A new Flutter application.
+## 使用方法
+配置pubspec.yaml文件 
+```bash
+  flutter_package_http_rm:
+    git:
+      url: 'https://github.com/xieyang0727/flutter_package_http_rm.git'
+```
+选择Pagkages get
 
-## Getting Started
+###  文件内部调用 
+```bash
+配置参数可按需配置
+HTTP_RM_CONFIGURATION.baseHttpURL="http://*****"; (必填)
 
-This project is a starting point for a Flutter application.
+HTTP_RM_CONFIGURATION.isHttpOpenLog=true; (不填写默认false)
 
-A few resources to get you started if this is your first Flutter project:
+HTTP_RM_CONFIGURATION.isHttpOpenCook=true(不填写默认false);
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+HTTP_RM_CONFIGURATION.headsMap ={
+      "version": "1.0.0"
+    };
+```
+方法调用
+```bash
+void setUpHttp () async{
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+//下列回调可选填也可不填
+
+HttpUtilRM httpUtilRM =HttpUtilRM(onRequestBefore:(){
+
+  print('开始网络请求了');
+
+},onRequestErrorBefore: (){
+
+  print('将要出错误了');
+
+},onResponseBefore: (){
+
+  print('网络响应之前');
+
+},parameterErrorCallbackRM: (DioError e){
+
+  print('网络出错误了回调 $e');
+
+});
+
+  ResponseData responsePost = await httpUtilRM.post(Api.TEST_LIST2);
+
+  Response response =responsePost.response;
+
+  print('responsePost $response');
+
+}
+```
