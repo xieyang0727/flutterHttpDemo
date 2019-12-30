@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
         "http://172.17.8.168:8080/release//";
     HTTP_RM_CONFIGURATION.baseDebugHttpURL = "http://172.17.8.168:8080/debug//";
 
-//    HTTP_RM_CONFIGURATION.isHttpOpenLog=true;
+//    HTTP_RM_CONFIGURATION.isHttpOpenLog=false;
 //    HTTP_RM_CONFIGURATION.isHttpOpenCook=true;
     HTTP_RM_CONFIGURATION.headsMap = {"version": "1.0.0"};
 
@@ -67,7 +67,11 @@ void setUpHttp() async {
       },
       parameterErrorCallbackRM: (DioError e) {
         print('网络出错误了回调 $e');
-      },isShowLog:false,headsMap: {"version":"1.0.0"});
+      },headsMap: {"version":"1.0.0"});
+
+//  可以链式调用
+//  httpUtilRM..setHeadsMap={"":""}..setIsShowLog=true;
+  
 
   ResponseData responsePost =
       await httpUtilRM.post(Api.TEST_LIST2, data: {"start": "2"});
