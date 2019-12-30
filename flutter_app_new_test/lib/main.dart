@@ -9,7 +9,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    HTTP_RM_CONFIGURATION.baseHttpURL="http://172.16.91.176:8080/CRDemo//";
+    HTTP_RM_CONFIGURATION.baseHttpURL="http://172.17.8.168:8080/CRDemo/";
+    HTTP_RM_CONFIGURATION.baseReleaseHttpURL="http://172.17.8.168:8080/release//";
+    HTTP_RM_CONFIGURATION.baseDebugHttpURL="http://172.17.8.168:8080/debug//";
+
 //    HTTP_RM_CONFIGURATION.isHttpOpenLog=true;
 //    HTTP_RM_CONFIGURATION.isHttpOpenCook=true;
     HTTP_RM_CONFIGURATION.headsMap ={
@@ -66,8 +69,8 @@ void setUpHttp () async
   },parameterErrorCallbackRM: (DioError e)
   {
     print('网络出错误了回调 $e');
-  });
-  ResponseData responsePost = await httpUtilRM.post(Api.TEST_LIST2);
+  },isShowLog: RM_SELECTION_STATE.is_true);
+  ResponseData responsePost = await httpUtilRM.post(Api.TEST_LIST2,data: {"start":"2"});
 
   Response response =responsePost.response;
 
