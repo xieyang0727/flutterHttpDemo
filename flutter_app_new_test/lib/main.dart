@@ -8,16 +8,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
-    HTTP_RM_CONFIGURATION.baseHttpURL="http://172.17.8.168:8080/CRDemo/";
-    HTTP_RM_CONFIGURATION.baseReleaseHttpURL="http://172.17.8.168:8080/release//";
-    HTTP_RM_CONFIGURATION.baseDebugHttpURL="http://172.17.8.168:8080/debug//";
+    HTTP_RM_CONFIGURATION.baseHttpURL = "http://172.17.8.168:8080/CRDemo/";
+    HTTP_RM_CONFIGURATION.baseReleaseHttpURL =
+        "http://172.17.8.168:8080/release//";
+    HTTP_RM_CONFIGURATION.baseDebugHttpURL = "http://172.17.8.168:8080/debug//";
 
 //    HTTP_RM_CONFIGURATION.isHttpOpenLog=true;
 //    HTTP_RM_CONFIGURATION.isHttpOpenCook=true;
-    HTTP_RM_CONFIGURATION.headsMap ={
-      "version": "1.0.0"
-    };
+    HTTP_RM_CONFIGURATION.headsMap = {"version": "1.0.0"};
 
     return MaterialApp(
       title: 'Flutter Demo',
@@ -56,26 +54,32 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+void setUpHttp() async {
+  HttpUtilRM httpUtilRM = HttpUtilRM(
+      onRequestBefore: () {
+        print('开始网络请求了');
+      },
+      onRequestErrorBefore: () {
+        print('将要出错误了');
+      },
+      onResponseBefore: () {
+        print('网络响应之前');
+      },
+      parameterErrorCallbackRM: (DioError e) {
+        print('网络出错误了回调 $e');
+      },isShowLog: RM_SELECTION_STATE.is_true,headsMap: {"version":"1.0.0"});
 
-void setUpHttp () async
-{
+  ResponseData responsePost =
+      await httpUtilRM.post(Api.TEST_LIST2, data: {"start": "2"});
 
-  HttpUtilRM httpUtilRM =HttpUtilRM(onRequestBefore:(){
-    print('开始网络请求了');
-  },onRequestErrorBefore: (){
-    print('将要出错误了');
-  },onResponseBefore: (){
-    print('网络响应之前');
-  },parameterErrorCallbackRM: (DioError e)
-  {
-    print('网络出错误了回调 $e');
-  },isShowLog: RM_SELECTION_STATE.is_true);
-  ResponseData responsePost = await httpUtilRM.post(Api.TEST_LIST2,data: {"start":"2"});
-
-  Response response =responsePost.response;
-
-  print('responsePost $response');
-
+  if (responsePost.isSuccess) {
+    Response response = responsePost.response;
+//    code码错误等业务处理在这里做
+    print("response $response");
+  } else {
+    DioError dioError = responsePost.dioError;
+    print("dioError $dioError");
+  }
 }
 
 class _MyHomePageState extends State<MyHomePage> {
