@@ -1,61 +1,7 @@
-# flutter_app_new_test
-
-## Flutter开发版本
- Flutter ( Channel master, v1.10.15-pre.351, on Mac OS X 10.14.6 18G84, locale
- zh-Hans-CN)
-
-## 安装
-引用头文件
-```bash
 import 'package:flutter_package_http_rm/flutter_package_http_rm.dart';
-```
+import 'package:flutter_app_new_test/Interceptor/custom_log_interceptor.dart';
 
-```bash
-打开pubspec.yaml并将以下行添加到依赖项： (备注:yaml 需要前边有两个空格,否则Packages get失败)
-
-  flutter_package_http_rm:
-    git:
-      url: 'https://github.com/xieyang0727/flutter_package_http_rm.git'
-
-```
-
-## flutter_package_http_rm 内部引用插件
-```bash
-  dio: 3.0.7  #dio版本
-
-  cookie_jar: ^1.0.0    #cookie缓存
-
-  dio_cookie_manager: ^1.0.0   #cookManager
-```
-
-
-## 使用方法
-
-### 外部可选配置
-```bash
-//  baseHttpURL(如果配置了baseHttpURL读取配置的如果没有配置，那么根据debug和release自动读取baseReleaseHttpURL和baseDebugHttpURL)
-
-HTTP_RM_CONFIGURATION.baseHttpURL="http://*****"; 
-
-HTTP_RM_CONFIGURATION.baseReleaseHttpURL="http:***";
-
-HTTP_RM_CONFIGURATION.baseDebugHttpURL="http:***";
-
-    
-HTTP_RM_CONFIGURATION.isHttpOpenLog=true; (不填写默认false)
-
-HTTP_RM_CONFIGURATION.isHttpOpenCook=true(不填写默认false);
-
-HTTP_RM_CONFIGURATION.headsMap ={
-      "version": "1.0.0"
-    };
-    
-HTTP_RM_CONFIGURATION.errorNetDefault="网络出错了";(选填)
-
-```
-方法调用
-```bash 
-void setUpHttp() async {
+class BaseNetService {
   HttpUtilRM httpUtilRM;
 
   BaseNetService() {
@@ -70,7 +16,7 @@ void setUpHttp() async {
 //      //Http请求头.
 //      headers: {"version": "1.0.1"});
 
-//以下参数均可以添加也可以不添加
+//一下参数均可以添加也可以不添加
 
     httpUtilRM = HttpUtilRM(
 //      onRequestBefore: () {
@@ -113,8 +59,3 @@ void setUpHttp() async {
 
   }
 }
-```
-
-[其它具体使用请查看demo](https://github.com/xieyang0727/flutterHttpDemo) 
-
-

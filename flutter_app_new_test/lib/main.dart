@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_new_test/Bean/main_list_bean.dart';
+import 'package:flutter_app_new_test/NetService/main_net_srevice.dart';
 import 'package:flutter_package_http_rm/flutter_package_http_rm.dart';
-import 'Api.dart';
 
 void main() => runApp(MyApp());
 
@@ -55,34 +56,17 @@ class MyHomePage extends StatefulWidget {
 }
 
 void setUpHttp() async {
-  HttpUtilRM httpUtilRM = HttpUtilRM(
-      onRequestBefore: () {
-        print('开始网络请求了');
-      },
-      onRequestErrorBefore: () {
-        print('将要出错误了');
-      },
-      onResponseBefore: () {
-        print('网络响应之前');
-      },
-      parameterErrorCallbackRM: (DioError e) {
-        print('网络出错误了回调 $e');
-      },headsMap: {"version":"1.0.0"});
-
-//  可以链式调用
-//  httpUtilRM..setHeadsMap={"":""}..setIsShowLog=true;
-  
-
-  ResponseData responsePost =
-      await httpUtilRM.post(Api.TEST_LIST2, data: {"start": "2"});
-
+//  调用数据
+  ResponseDataRM responsePost = await MainNetService().setUpHttpList2();
   if (responsePost.isSuccess) {
     Response response = responsePost.response;
-//    code码错误等业务处理在这里做
-    print("response $response");
+    //数据转换
+    MainListBean mainListBean = MainListBean.fromJson(response.data);
+    print(mainListBean.result.length);
   } else {
-    DioError dioError = responsePost.dioError;
-    print("dioError $dioError");
+//    这里如果对code提前做操作了 返回错误也在这里，如果没添加提前处理那么这里只返回网络错误
+    RMError rmError = responsePost.rmError;
+    print("dioError $rmError");
   }
 }
 
